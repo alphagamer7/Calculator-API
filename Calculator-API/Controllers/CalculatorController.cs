@@ -49,7 +49,24 @@ namespace Calculator_API.Controllers
             return calc.Multiply(left, right);
         }
 
-     
+        // Create an API route for division operation via HttpGet request
+        // with left and right query params specified on the HttpRequest URL.
+        // This will return response with "400 Bad Request" HttpStatusCode
+        // and "Attempted to divide by zero." message if
+        // the HttpRequest URL contains "right" parameter as number 0.
+        [HttpGet]
+        [Route("divide/{left}/{right}")]
+        public ObjectResult Divide(double left, double right)
+        {
+            try
+            {
+                return Ok(calc.Divide(left, right));
+            }
+            catch (DivideByZeroException ex)
+            {
+                return Problem(detail: ex.Message, statusCode: (int)HttpStatusCode.BadRequest);
+            }
+        }
     }
 }
 
