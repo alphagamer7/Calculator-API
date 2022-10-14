@@ -62,7 +62,11 @@ namespace Calculator_API.Controllers
             {
                 return Ok(calc.Divide(left, right));
             }
-            catch (Exception ex)
+            catch (DivideByZeroException ex)
+            {
+                return Problem(detail: ex.Message, statusCode: (int)HttpStatusCode.BadRequest);
+            }
+            catch(Exception ex)
             {
                 return Problem(detail: ex.Message, statusCode: (int)HttpStatusCode.BadRequest);
             }
